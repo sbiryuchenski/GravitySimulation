@@ -26,8 +26,6 @@ namespace sfml
         public void Add(Vector2f position)
         {
             var a = Line[0];
-            //if (Math.Abs(Line[Line.VertexCount - 1].Position.X - position.X) > 1 && Math.Abs(Line[Line.VertexCount - 1].Position.Y - position.Y) > 1)
-            //{
             if (Line.VertexCount == n)
             {
                 //Line.Resize(n * 2);
@@ -42,7 +40,6 @@ namespace sfml
             {
                 Line.Append(new Vertex(position, Color));
             }
-            //}
         }
     }
 }

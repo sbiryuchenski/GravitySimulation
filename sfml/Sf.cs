@@ -40,67 +40,75 @@ namespace sfml
                 }
             }
         }
-            void InitWindow()
+        void InitWindow()
+        {
+            VideoMode mode = new VideoMode(W, H);
+            window = new RenderWindow(mode, "хуй");
+            window.SetFramerateLimit(FPS);
+
+            Planets.AddPlanet(1, new Vector2f(0.1f, 0.1f), new Vector2f(W/2, H/2), new Color(255, 0, 0), 5);
+            Planets.AddPlanet(50, new Vector2f(0f, -0.1f), new Vector2f(W / 2+100, H / 2+100), new Color(0, 255, 0), 5);
+            Planets.AddPlanet(50, new Vector2f(0.1f, -0.4f), new Vector2f(W / 2 -100, H / 2 + 100), new Color(0, 255, 0), 5);
+        }
+
+        public void CreatePlanet()
+        {
+            isPaused = true;
+            Vector2i point = Mouse.GetPosition(window);
+            Planets.AddPlanet(20, new Vector2f(0, 0), (Vector2f)point, new Color(0, 0, 255), 5);
+        }
+
+        public void Show()
+        {
+            InitWindow();
+            window.Closed += (obj, e) => { window.Close(); };
+            window.KeyPressed += (sender, e) =>
             {
-                VideoMode mode = new VideoMode(W, H);
-                window = new RenderWindow(mode, "хуй");
-                window.SetFramerateLimit(FPS);
-
-                Planets.AddPlanet(1, new Vector2f(0.4f, 0.1f), new Vector2f(W/2, H/2), new Color(255, 0, 0), 5);
-                Planets.AddPlanet(50, new Vector2f(-0.1f, -0.1f), new Vector2f(W / 2+100, H / 2+100), new Color(0, 255, 0), 5);
-            }
-
-            public void Show()
-            {
-                InitWindow();
-                window.Closed += (obj, e) => { window.Close(); };
-                window.KeyPressed += (sender, e) =>
+                if (e.Code == Keyboard.Key.Escape)
                 {
-                    if (e.Code == Keyboard.Key.Escape)
-                    {
-                        window.Close();
-                    }
-                };
-                window.MouseButtonPressed += (sender, e) =>
-                {
-                    if (e.Button == Mouse.Button.Left)
-                    {
-                        Mouse.GetPosition();
-                    }
-                };
-
-                window.KeyPressed += (sender, e) =>
-
-                {
-                    if (e.Code == Keyboard.Key.P)
-                    {
-                        isPaused = !isPaused;
-                    }
-                };
-
-                Clock clock = new Clock();
-                float delta = 100f;
-
-
-
-                while (window.IsOpen)
-                {
-
-                    delta = clock.Restart().AsSeconds();
-
-                    window.DispatchEvents();
-
-
-                    if (!isPaused)
-                    {
-                        window.Clear();
-                        CountNextState(Planets.PlanetList);
-                        DrawPlanets(Planets.PlanetList);
-                    }
-
-                    window.Display();
+                    window.Close();
                 }
+            };
+            window.MouseButtonPressed += (sender, e) =>
+            {
+                if (e.Button == Mouse.Button.Left)
+                {
+                    CreatePlanet();
+                }
+            };
+
+            window.KeyPressed += (sender, e) =>
+
+            {
+                if (e.Code == Keyboard.Key.P)
+                {
+                    isPaused = !isPaused;
+                }
+            };
+
+            Clock clock = new Clock();
+            float delta = 100f;
+
+
+
+            while (window.IsOpen)
+            {
+
+                delta = clock.Restart().AsSeconds();
+
+                window.DispatchEvents();
+
+                window.Clear();
+                DrawPlanets(Planets.PlanetList);
+
+                if (!isPaused)
+                {
+                    CountNextState(Planets.PlanetList);
+                }
+
+                window.Display();
             }
+        }
     }
 }
 
