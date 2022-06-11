@@ -15,16 +15,12 @@ namespace sfml
         /// <summary>
         /// Add a planet to planetList
         /// </summary>
-        /// <param name="mass"></param>
-        /// <param name="Speed"></param>
-        /// <param name="startPosition"></param>
-        /// <param name="color"></param>
-        /// <param name="size"></param>
         public static void AddPlanet(float mass, Vector2f Speed, Vector2f startPosition, Color color, int size)
         {
             PBody planet = new PBody { Mass = mass, Speed = Speed, Pos = startPosition, Color = color, Size = size };
             planet.Init();
             PlanetList.Add(planet);
         }
+        public static void AddPlanet(PBody planet) => AddPlanet(planet.Mass, planet.Speed, planet.Pos, planet.Color, planet.Size);
     }
 }

@@ -24,7 +24,7 @@ namespace sfml
             circle.Position = Pos;
             circle.Radius = Size;
             circle.FillColor = Color;
-            line = new PlanetLine(Color);
+            line = new PlanetLine(Pos, Color);
         }
 
         /// <summary>
@@ -67,11 +67,18 @@ namespace sfml
         public void CountOffset(PBody bodyStable)
         {
             float range = Range(bodyStable);
-            float ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));
-            float ay = (float)(bodyStable.Mass * (bodyStable.Pos.Y - this.Pos.Y) / Math.Pow(range, 3));
-            Speed = new Vector2f(Speed.X + ax, Speed.Y + ay);
-            Pos = new Vector2f(Pos.X + Speed.X, Pos.Y + Speed.Y);
-            SetOffset();
+            if (range < 2000)
+            {
+                float ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));
+                float ay = (float)(bodyStable.Mass * (bodyStable.Pos.Y - this.Pos.Y) / Math.Pow(range, 3));
+                Speed = new Vector2f(Speed.X + ax, Speed.Y + ay);
+                Pos = new Vector2f(Pos.X + Speed.X, Pos.Y + Speed.Y);
+                SetOffset();
+            }
+            if (Pos.X > 5000 || Pos.Y > 5000)
+            {
+                line.Line.Clear();
+            }
         }
 
         private float Range(PBody bodyStable)
