@@ -15,7 +15,7 @@ namespace sfml
             Init(startPosition, color);
         }
 
-        static uint n = 2000;
+        static uint n = 1000;
         public VertexArray Line { get; private set; } = new VertexArray(PrimitiveType.LineStrip, n);
         private void Init(Vector2f startPosition, Color color)
         {
@@ -31,7 +31,7 @@ namespace sfml
         /// <param name="position"></param>
         public void Add(Vector2f position)
         {
-            if (position.X < Sf.W + 1 && position.Y < Sf.H + 1)
+            if (position.X < Sf.W && position.Y < Sf.H)
             {
                 if (Line.VertexCount == n)
                 {

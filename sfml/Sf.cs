@@ -14,25 +14,16 @@ namespace sfml
         Clock clock = new Clock();
         float delta = 100f;
         VertexArray speedLine;
-        string enteredMass;
         int mass;
 
         bool isPaused = false;
         static public bool isPausedCreating = false;
         static public bool creatingSpeed = false;
         static public bool creatingPlanet = false;
-        bool massPause = false;
 
         private MassInput field; // dont use it. It won't work
-        MassInput GetField()
-        {
-            if (field == null)
-            {
-                field = new MassInput();
-                field.Init();
-            }
-            return field;
-        }
+        private MassInput GetField { get; set; } = new MassInput();
+
         void DrawPlanet(PBody obj) => window.Draw(obj.GetDrawable());
         void DrawOrbit(PBody obj) => window.Draw(obj.GetLine());
         void DrawPlanets(List<PBody> planets)
@@ -47,7 +38,7 @@ namespace sfml
             }
             for (int i = 0; i < planets.Count; i++)
             {
-                if (planets[i].Pos.X > 1000 || planets[i].Pos.Y > 1000)
+                if (planets[i].Pos.X > W + 1000 || planets[i].Pos.X < -1000 || planets[i].Pos.Y > H + 1000 || planets[i].Pos.Y < -1000)
                 {
                     planets.Remove(planets[i]);
                 }
@@ -65,21 +56,21 @@ namespace sfml
                     }
                 }
             }
-        }
-        void InputMass()
-        {
-
+            planets[0].Pos = new Vector2f(0, 0);
         }
         void InitWindow()
         {
             VideoMode mode = new VideoMode(W, H);
             window = new RenderWindow(mode, "хуй");
             window.SetFramerateLimit(FPS);
-            Planets.AddPlanet(0, new Vector2f(0, 0), new Vector2f(0, 0), new Color(), 0);
+            Planets.AddPlanet(Planets.EmptyPlanet);
 
             Planets.AddPlanet(1, new Vector2f(0.1f, 0.1f), new Vector2f(W / 2, H / 2), new Color(255, 0, 0), 5);
             Planets.AddPlanet(50, new Vector2f(0f, -0.1f), new Vector2f(W / 2 + 100, H / 2 + 100), new Color(0, 255, 0), 5);
             Planets.AddPlanet(50, new Vector2f(0.1f, -0.4f), new Vector2f(W / 2 - 100, H / 2 + 100), new Color(0, 255, 0), 5);
+
+            field = new MassInput();
+            field.Init();
         }
 
 
@@ -101,26 +92,32 @@ namespace sfml
                 if (e.Button == Mouse.Button.Left)
                 {
                     Vector2i point = Mouse.GetPosition(window);
-                    if (GetField().CheckIsMouseInRectangle())
+                    if (GetField.CheckIsMouseInRectangle())
                     {
-                        GetField().InputMass();
-                        if (GetField().isEditing)
+                        GetField.InputMass();
+                        if (GetField.isEditing)
                         {
                             window.TextEntered += (sender, e) =>
                             {
                                 if (e.Unicode != "\b")
                                 {
-                                    enteredMass += e.Unicode;
-                                    e.Unicode = string.Empty;
+                                    if (GetField.isEditing)
+                                    {
+                                        GetField.enteredMass += e.Unicode;
+                                        e.Unicode = string.Empty;
+                                    }
                                 }
                             };
                             window.KeyPressed += (sender, e) =>
                             {
-                                if (e.Code == Keyboard.Key.Backspace)
+                                if (GetField.isEditing)
                                 {
-                                    if (enteredMass.Length > 1)
+                                    if (e.Code == Keyboard.Key.Backspace)
                                     {
-                                        enteredMass = string.Empty;
+                                        if (GetField.enteredMass.Length > 1)
+                                        {
+                                            GetField.enteredMass = string.Empty;
+                                        }
                                     }
                                 }
                             };
@@ -128,21 +125,21 @@ namespace sfml
                     }
                     else
                     {
-                        if(enteredMass == string.Empty)
+                        if (GetField.enteredMass == string.Empty)
                         {
-                            enteredMass = "20";
+                            GetField.enteredMass = "20";
                         }
-                        if(int.TryParse(enteredMass, out mass))
+                        if (int.TryParse(GetField.enteredMass, out mass))
                         {
-                            Planets.ConstMass = int.Parse(enteredMass);
+                            Planets.ConstMass = int.Parse(GetField.enteredMass);
                         }
                         else
                         {
-                            enteredMass = "20";
+                            GetField.enteredMass = "20";
                             Planets.ConstMass = 20;
                         }
 
-                        if (GetField().isEditing) GetField().isEditing = false;
+                        if (GetField.isEditing) GetField.isEditing = false;
                         else
                         {
                             Planets.CreatePlanet();
@@ -174,24 +171,10 @@ namespace sfml
             };
             window.KeyPressed += (sender, e) =>
             {
-                
-                //if (e.Code == Keyboard.Key.M)
-                //{
-                //    InputMass();
-                //    massPause = !massPause;
-                //    enteredMass = string.Empty;
-                //    window.TextEntered += (sender, e) =>
-                //    {
-                //        enteredMass += e.Unicode;
-                //    };
-                //    window.KeyPressed += (sender, e) =>
-                //    {
-                //        if (e.Code == Keyboard.Key.Backspace)
-                //        {
-                //            enteredMass = enteredMass.Remove(enteredMass.Length - 1);
-                //        }
-                //    };
-                //}
+                if (e.Code == Keyboard.Key.C)
+                {
+                    Planets.ClearPlanetList();
+                }
             };
             #endregion
 
@@ -205,7 +188,7 @@ namespace sfml
                 window.Clear();
                 DrawPlanets(Planets.PlanetList);
 
-                if (!isPaused && !isPausedCreating && !GetField().isEditing)
+                if (!isPaused && !isPausedCreating && !GetField.isEditing)
                 {
                     CountNextState(Planets.PlanetList);
                 }
@@ -215,7 +198,7 @@ namespace sfml
                         speedLine[1] = new Vertex((Vector2f)Mouse.GetPosition(window));
                     window.Draw(speedLine);
                 }
-                GetField().DrawTextField(/*Planets.ConstMass.ToString()*/ enteredMass);
+                GetField.DrawTextField(/*Planets.ConstMass.ToString()*/ GetField.enteredMass);
                 window.Display();
             }
             #endregion

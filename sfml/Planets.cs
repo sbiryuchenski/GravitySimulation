@@ -14,6 +14,7 @@ namespace sfml
         public static List<PBody> PlanetList { get; private set; } = new List<PBody>();
         static PBody planetCandidate = null;
         public static int ConstMass { get; set; } = 20;
+        public static readonly PBody EmptyPlanet = new PBody(0.00000000001f, new Vector2f(0, 0), new Vector2f(0, 0), new Color(), 0);
 
         /// <summary>
         /// Add a planet to planetListз
@@ -45,6 +46,15 @@ namespace sfml
             Sf.isPausedCreating = false;
             if (planetCandidate != null) Planets.AddPlanet(planetCandidate);
             planetCandidate = null;
+        }
+
+        /// <summary>
+        /// Delet all planets from list
+        /// </summary>
+        public static void ClearPlanetList()
+        {
+            PlanetList.Clear();
+            PlanetList.Add(EmptyPlanet);
         }
     }
 }

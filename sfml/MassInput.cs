@@ -11,6 +11,11 @@ namespace sfml
         Text text = new Text();
         Font font = new Font("font.ttf");
         public bool isEditing { get; set; } = false;
+        public string enteredMass { get; set; } = Planets.ConstMass.ToString();
+        public MassInput()
+        {
+            Init();
+        }
         public void Init()
         {
             field.Size = new Vector2f(100, 20);
@@ -55,7 +60,7 @@ namespace sfml
         public void InputMass()
         {
             isEditing = true;
-
+            enteredMass = string.Empty;
         }
     }
 }

@@ -11,13 +11,35 @@ namespace sfml
     {
         // float G = 1;
         public CircleShape circle { get; private set; }
-        public Drawable GetDrawable() => circle;
-        public Drawable GetLine() => line.GetDrawable();
+        public Drawable GetDrawable()
+        {
+            if (circle == null)
+            {
+                circle = new CircleShape();
+            }
+            return circle;
+        }
+        public Drawable GetLine()
+            {
+            if (line == null)
+            {
+                line = new PlanetLine(Pos, Color);
+            }
+            return line.GetDrawable();
+            }
         private PlanetLine line;
 
         public PBody()
         {
             circle = new CircleShape();
+        }
+        public PBody(float mass, Vector2f speed, Vector2f startPosition, Color color, int size)
+        {
+            Mass = mass;
+            Speed = Speed;
+            Pos = startPosition;
+            Color = color;
+            Size = size;
         }
         public void Init()
         {
@@ -84,7 +106,9 @@ namespace sfml
         private float Range(PBody bodyStable)
         {
             float range = (float)Math.Sqrt(Math.Pow((this.Pos.X - bodyStable.Pos.X), 2) + Math.Pow((this.Pos.Y - bodyStable.Pos.Y), 2)); // Pythagorian theorem
+            if (range < 1) range = 1;
             return range;
         }
+
     }
 }
