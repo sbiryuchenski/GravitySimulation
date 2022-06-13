@@ -2,33 +2,12 @@
 using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
+using System;
 
 namespace sfml
 {
-    class Sf
+    partial class Sf
     {
-        public static readonly uint H = 700;
-        public static readonly uint W = 1200;
-        const uint FPS = 60;
-        public static RenderWindow window;
-        public static View view;
-
-        Clock clock = new Clock();
-        float delta = 100f;
-        VertexArray speedLine;
-        int mass;
-        Vector2f currentMousePosition;
-        Vector2f newPosition;
-
-        bool isPaused = false;
-        static public bool isPausedCreating = false;
-        static public bool creatingSpeed = false;
-        static public bool creatingPlanet = false;
-        bool isWindowMoving = false;
-
-       // private MassInput field; // dont use it. It won't work
-        private MassInput GetField { get; set; } = new MassInput();
-
         void DrawPlanet(PBody obj) => window.Draw(obj.GetDrawable());
         void DrawOrbit(PBody obj) => window.Draw(obj.GetLine());
         void DrawPlanets(List<PBody> planets)
@@ -58,28 +37,12 @@ namespace sfml
                 window.Draw(speedLine);
             }
         }
-        void CountNextState(List<PBody> planets)
-        {
-            foreach (var planet in planets)
-            {
-                foreach (var planet2 in planets)
-                {
-                    if (planet != planet2)
-                    {
-                        planet.CountOffset(planet2);
-                    }
-                }
-            }
-            if(planets.Count == 0)
-                Planets.AddPlanet(Planets.EmptyPlanet);
-            planets[0].Pos = new Vector2f(0, 0);
-        }
+        
         void MoveWindow()
         {
             var offset = window.MapPixelToCoords((Vector2i)currentMousePosition) - window.MapPixelToCoords((Vector2i)newPosition);
             view.Move(offset);
             window.SetView(view);
-            GetField.MoveCoords(offset);
         }
         void ZoomWindow(float delta)
         {
@@ -92,7 +55,6 @@ namespace sfml
                 view.Zoom(1.05f);
             }
             window.SetView(view);
-            GetField.MapCoords();
         }
         void InitWindow()
         {
@@ -121,6 +83,20 @@ namespace sfml
                 if (e.Code == Keyboard.Key.Escape)
                 {
                     window.Close();
+                }
+                if (e.Code == Keyboard.Key.P)
+                {
+                    isPaused = !isPaused;
+                    creatingSpeed = false;
+                    creatingPlanet = false;
+                }
+                if (e.Code == Keyboard.Key.C)
+                {
+                    Planets.ClearPlanetList();
+                }
+                if(e.Code == Keyboard.Key.F3)
+                {
+                    isSystemInfoDisplay = !isSystemInfoDisplay;
                 }
             };
             window.MouseButtonPressed += (sender, e) =>
@@ -161,29 +137,36 @@ namespace sfml
                     }
                     else
                     {
-                        if (GetField.enteredMass == string.Empty)
+                        if (ColorSelecter.isInColor())
                         {
-                            GetField.enteredMass = "20";
-                        }
-                        if (int.TryParse(GetField.enteredMass, out mass))
-                        {
-                            Planets.ConstMass = int.Parse(GetField.enteredMass);
+                           ColorSelecter.SelectColor();
                         }
                         else
                         {
-                            GetField.enteredMass = "20";
-                            Planets.ConstMass = 20;
-                        }
+                            if (GetField.enteredMass == string.Empty)
+                            {
+                                GetField.enteredMass = "20";
+                            }
+                            if (int.TryParse(GetField.enteredMass, out mass))
+                            {
+                                Planets.ConstMass = int.Parse(GetField.enteredMass);
+                            }
+                            else
+                            {
+                                GetField.enteredMass = "20";
+                                Planets.ConstMass = 20;
+                            }
 
-                        if (GetField.isEditing) GetField.isEditing = false;
-                        else
-                        {
-                            Planets.CreatePlanet();
+                            if (GetField.isEditing) GetField.isEditing = false;
+                            else
+                            {
+                                Planets.CreatePlanet();
 
-                            speedLine = new VertexArray(PrimitiveType.LineStrip, 2);
-                            speedLine.Clear();
-                            speedLine.Append(new Vertex((Vector2f)point));
-                            speedLine.Append(new Vertex((Vector2f)point));
+                                speedLine = new VertexArray(PrimitiveType.LineStrip, 2);
+                                speedLine.Clear();
+                                speedLine.Append(new Vertex((Vector2f)point));
+                                speedLine.Append(new Vertex((Vector2f)point));
+                            }
                         }
                     }
                 }
@@ -211,19 +194,6 @@ namespace sfml
                     MoveWindow();
                  currentMousePosition = new Vector2f(e.X, e.Y);
              };
-            window.KeyPressed += (sender, e) =>
-            {
-                if (e.Code == Keyboard.Key.P)
-                {
-                    isPaused = !isPaused;
-                    creatingSpeed = false;
-                    creatingPlanet = false;
-                }
-                if (e.Code == Keyboard.Key.C)
-                {
-                    Planets.ClearPlanetList();
-                }
-            };
             window.MouseWheelScrolled += (sender, e) =>
             {
                 ZoomWindow(e.Delta);
@@ -235,14 +205,16 @@ namespace sfml
             #region drawing
             while (window.IsOpen)
             {
+                
                 delta = clock.Restart().AsSeconds();
+                Framerate = (int)Math.Round(1/delta);
 
                 window.DispatchEvents();
                 window.Clear();
 
                 if (!isPaused && !isPausedCreating && !GetField.isEditing)
                 {
-                    CountNextState(Planets.PlanetList);
+                    Planets.CountNextState();
                 }
 
                 DrawSpeedLine();
@@ -252,6 +224,8 @@ namespace sfml
                 var old = window.GetView();
                 window.SetView(window.DefaultView);
                 GetField.DrawTextField(GetField.enteredMass);
+                AllText.DrawSystemInfoText(isSystemInfoDisplay);
+                ColorSelecter.DrawColorSelecter();
                 window.SetView(view);
 
                 window.Display();

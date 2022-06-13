@@ -11,9 +11,10 @@ namespace sfml
         /// List of bodies in sysmem
         /// </summary>
         public static List<PBody> PlanetList { get; private set; } = new List<PBody>();
-        static PBody planetCandidate = null;
-        public static int ConstMass { get; set; } = 20;
-        public static readonly PBody EmptyPlanet = new PBody(0.00000000001f, new Vector2f(0, 0), new Vector2f(0, 0), new Color(), 0);
+        static PBody planetCandidate = null; // New planet when creating
+        public static int ConstMass { get; set; } = 20; // Mass of planet when it's creating
+        public static Color ConstColor { get; set; } = Color.Blue;
+        public static readonly PBody EmptyPlanet = new PBody(0.00000000001f, new Vector2f(0, 0), new Vector2f(0, 0), new Color(), 0); // Need to work counting algoritm
 
         /// <summary>
         /// Add a planet to planetListз
@@ -25,6 +26,9 @@ namespace sfml
         }
         public static void AddPlanet(PBody planet) => AddPlanet(planet.Mass, planet.Speed, planet.Pos, planet.Color, planet.Size);
 
+        /// <summary>
+        /// Create new planet and add it to planet list
+        /// </summary>
         public static void CreatePlanet()
         {
             Sf.creatingPlanet = true;
@@ -36,7 +40,7 @@ namespace sfml
             int size = ConstMass / 50;
             if (size < 5) size = 5;
             if (size > 20) size = 20;
-            planetCandidate = new PBody { Mass = ConstMass, Speed = new Vector2f(0, 0), Pos = (Vector2f)point, Color = new Color(0, 0, 255), Size = size };
+            planetCandidate = new PBody { Mass = ConstMass, Speed = new Vector2f(0, 0), Pos = (Vector2f)point, Color = ConstColor, Size = size };
         }
         public static void CreateSpeed()
         {
@@ -57,6 +61,22 @@ namespace sfml
         {
             PlanetList.Clear();
             PlanetList.Add(EmptyPlanet);
+        }
+        public static void CountNextState()
+        {
+            foreach (var planet in PlanetList)
+            {
+                foreach (var planet2 in PlanetList)
+                {
+                    if (planet != planet2)
+                    {
+                        planet.CountOffset(planet2);
+                    }
+                }
+            }
+            if (PlanetList.Count == 0)
+                Planets.AddPlanet(Planets.EmptyPlanet);
+            PlanetList[0].Pos = new Vector2f(0, 0);
         }
     }
 }

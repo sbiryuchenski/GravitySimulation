@@ -22,7 +22,7 @@ namespace sfml
             field.FillColor = new Color(0, 0, 0);
             field.OutlineColor = new Color(255, 255, 255);
             field.OutlineThickness = 1;
-            field.Position = new Vector2f(5, Sf.H - field.Size.Y - 5);
+            field.Position = new Vector2f(5, Sf.H - field.Size.Y - 10);
 
             text.Font = font;
             text.FillColor = new Color(255, 255, 255);
@@ -61,22 +61,6 @@ namespace sfml
         {
             isEditing = true;
             enteredMass = string.Empty;
-        }
-        /// <summary>
-        /// Accept new coords when size changed
-        /// </summary>
-        public void MapCoords()
-        {
-            //text.Position = Sf.window.MapPixelToCoords((Vector2i)text.Position);
-            //field.Position = Sf.window.MapPixelToCoords((Vector2i)field.Position);
-        }
-        /// <summary>
-        /// Accept new coords when field moved
-        /// </summary>
-        public void MoveCoords(Vector2f offset)
-        {
-            //text.Position = new Vector2f(text.Position.X + offset.X, text.Position.Y + offset.Y);
-            //field.Position = new Vector2f(field.Position.X + offset.X, field.Position.Y + offset.Y);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
+using System.Collections.Generic;
 
 namespace sfml
 {
@@ -15,7 +16,7 @@ namespace sfml
             Init(startPosition, color);
         }
 
-        static uint n = 1000;
+        static uint n = 2000;
         public VertexArray Line { get; private set; } = new VertexArray(PrimitiveType.LineStrip, n);
         private void Init(Vector2f startPosition, Color color)
         {
@@ -31,23 +32,23 @@ namespace sfml
         /// <param name="position"></param>
         public void Add(Vector2f position)
         {
-            if (position.X < Sf.W && position.Y < Sf.H)
-            {
+            //VertexBuffer
+            //if (position.X < Sf.W && position.Y < Sf.H)
+            //{
+            List<Vertex> ver = new List<Vertex>();
                 if (Line.VertexCount == n)
                 {
-                    //Line.Resize(n * 2);
-                    //n *= 2;
-                    for (uint i = 0; i < n - 1; i++)
-                    {
-                        Line[i] = Line[i + 1];
-                    }
-                    Line[n - 1] = new Vertex(position, Color);
+                for (uint i = 0; i < n - 1; i++)
+                {
+                    Line[i] = Line[i + 1];
                 }
+                Line[n - 1] = new Vertex(position, Color);
+            }
                 else
                 {
                     Line.Append(new Vertex(position, Color));
                 }
-            }
+            //}
         }
     }
 }
