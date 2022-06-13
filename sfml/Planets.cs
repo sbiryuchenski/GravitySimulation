@@ -14,6 +14,7 @@ namespace sfml
         static PBody planetCandidate = null; // New planet when creating
         public static int ConstMass { get; set; } = 20; // Mass of planet when it's creating
         public static Color ConstColor { get; set; } = Color.Blue;
+        public static int ConstSize { get; set; } = 5;
         public static readonly PBody EmptyPlanet = new PBody(0.00000000001f, new Vector2f(0, 0), new Vector2f(0, 0), new Color(), 0); // Need to work counting algoritm
 
         /// <summary>
@@ -33,14 +34,11 @@ namespace sfml
         {
             Sf.creatingPlanet = true;
             Sf.creatingSpeed = true;
-
             Sf.isPausedCreating = true;
 
             Vector2f point = Sf.window.MapPixelToCoords(Mouse.GetPosition(Sf.window));
-            int size = ConstMass / 50;
-            if (size < 5) size = 5;
-            if (size > 20) size = 20;
-            planetCandidate = new PBody { Mass = ConstMass, Speed = new Vector2f(0, 0), Pos = (Vector2f)point, Color = ConstColor, Size = size };
+
+            planetCandidate = new PBody { Mass = ConstMass, Speed = new Vector2f(0, 0), Pos = (Vector2f)point, Color = ConstColor, Size = ConstSize };
         }
         public static void CreateSpeed()
         {

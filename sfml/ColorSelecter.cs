@@ -21,31 +21,31 @@ namespace sfml
             
             red = new RectangleShape();
             red.FillColor = Constants.GetColor(Colors.Red);
-            red.Position = new Vector2f(140, Sf.H - 25);
+            red.Position = new Vector2f(140, Sf.H - 30);
 
             orange = new RectangleShape();
             orange.FillColor = Constants.GetColor(Colors.Orange);
-            orange.Position = new Vector2f(170, Sf.H - 25);
+            orange.Position = new Vector2f(170, Sf.H - 30);
 
             yellow = new RectangleShape();
             yellow.FillColor = Constants.GetColor(Colors.Yellow);
-            yellow.Position = new Vector2f(200, Sf.H - 25);
+            yellow.Position = new Vector2f(200, Sf.H - 30);
 
             green = new RectangleShape();
             green.FillColor = Constants.GetColor(Colors.Green);
-            green.Position = new Vector2f(230, Sf.H - 25);
+            green.Position = new Vector2f(230, Sf.H - 30);
 
             blue = new RectangleShape();
             blue.FillColor = Constants.GetColor(Colors.Blue);
-            blue.Position = new Vector2f(260, Sf.H - 25);
+            blue.Position = new Vector2f(260, Sf.H - 30);
 
             violet = new RectangleShape();
             violet.FillColor = Constants.GetColor(Colors.Violet);
-            violet.Position = new Vector2f(290, Sf.H - 25);
+            violet.Position = new Vector2f(290, Sf.H - 30);
 
             inLoveToad = new RectangleShape();
             inLoveToad.FillColor = Constants.GetColor(Colors.InLoveToad);
-            inLoveToad.Position = new Vector2f(320, Sf.H - 25);
+            inLoveToad.Position = new Vector2f(320, Sf.H - 30);
 
             colorList = new List<RectangleShape>() { red, orange, yellow, green, blue, violet, inLoveToad };
 
@@ -65,7 +65,7 @@ namespace sfml
             var mouse = (Vector2f)Mouse.GetPosition(Sf.window);
             foreach (var clr in colorList)
             {
-                clr.OutlineColor = Color.Black;
+                clr.OutlineColor = Color.Transparent;
             }
             foreach (var clr in colorList)
             {
@@ -95,7 +95,7 @@ namespace sfml
             Planets.ConstColor = selectedColor.FillColor;
             foreach (var clr in colorList)
             {
-                clr.Position = new Vector2f(clr.Position.X, Sf.H - 25);
+                clr.Position = new Vector2f(clr.Position.X, Sf.H - 30);
             }
             selectedColor.Position = new Vector2f(selectedColor.Position.X, Sf.H - 35);
         }

@@ -32,5 +32,6 @@ namespace sfml
         private MassInput GetField { get; set; } = new MassInput();
         private TextElements AllText { get; set; } = new TextElements();
         private ColorSelecter ColorSelecter { get; set; } = new ColorSelecter();
+        private SizeSelecter SizeSelecter { get; set; } = new SizeSelecter();
     }
 }

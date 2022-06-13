@@ -22,7 +22,7 @@ namespace sfml
             field.FillColor = new Color(0, 0, 0);
             field.OutlineColor = new Color(255, 255, 255);
             field.OutlineThickness = 1;
-            field.Position = new Vector2f(5, Sf.H - field.Size.Y - 10);
+            field.Position = new Vector2f(10, Sf.H - field.Size.Y - 10);
 
             text.Font = font;
             text.FillColor = new Color(255, 255, 255);

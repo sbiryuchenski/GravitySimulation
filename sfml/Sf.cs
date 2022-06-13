@@ -37,7 +37,7 @@ namespace sfml
                 window.Draw(speedLine);
             }
         }
-        
+
         void MoveWindow()
         {
             var offset = window.MapPixelToCoords((Vector2i)currentMousePosition) - window.MapPixelToCoords((Vector2i)newPosition);
@@ -94,7 +94,7 @@ namespace sfml
                 {
                     Planets.ClearPlanetList();
                 }
-                if(e.Code == Keyboard.Key.F3)
+                if (e.Code == Keyboard.Key.F3)
                 {
                     isSystemInfoDisplay = !isSystemInfoDisplay;
                 }
@@ -139,7 +139,11 @@ namespace sfml
                     {
                         if (ColorSelecter.isInColor())
                         {
-                           ColorSelecter.SelectColor();
+                            ColorSelecter.SelectColor();
+                        }
+                        else if (SizeSelecter.isInSize())
+                        {
+                            SizeSelecter.SelectSize();
                         }
                         else
                         {
@@ -170,7 +174,7 @@ namespace sfml
                         }
                     }
                 }
-                if(e.Button == Mouse.Button.Right)
+                if (e.Button == Mouse.Button.Right)
                 {
                     currentMousePosition = (Vector2f)Mouse.GetPosition(window);
                     isWindowMoving = true;
@@ -182,7 +186,7 @@ namespace sfml
                 {
                     Planets.CreateSpeed();
                 }
-                if(e.Button == Mouse.Button.Right)
+                if (e.Button == Mouse.Button.Right)
                 {
                     isWindowMoving = false;
                 }
@@ -190,24 +194,24 @@ namespace sfml
             window.MouseMoved += (sender, e) =>
              {
                  newPosition = new Vector2f(e.X, e.Y);
-                 if(isWindowMoving)
-                    MoveWindow();
+                 if (isWindowMoving)
+                     MoveWindow();
                  currentMousePosition = new Vector2f(e.X, e.Y);
              };
             window.MouseWheelScrolled += (sender, e) =>
             {
                 ZoomWindow(e.Delta);
             };
-            if(isWindowMoving)
+            if (isWindowMoving)
                 MoveWindow();
             #endregion
 
             #region drawing
             while (window.IsOpen)
             {
-                
+
                 delta = clock.Restart().AsSeconds();
-                Framerate = (int)Math.Round(1/delta);
+                Framerate = (int)Math.Round(1 / delta);
 
                 window.DispatchEvents();
                 window.Clear();
@@ -226,6 +230,7 @@ namespace sfml
                 GetField.DrawTextField(GetField.enteredMass);
                 AllText.DrawSystemInfoText(isSystemInfoDisplay);
                 ColorSelecter.DrawColorSelecter();
+                SizeSelecter.DrawSizeSelecter();
                 window.SetView(view);
 
                 window.Display();
