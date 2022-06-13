@@ -1,7 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System;
 using System.Collections.Generic;
 
 namespace sfml
@@ -33,12 +32,15 @@ namespace sfml
 
             Sf.isPausedCreating = true;
 
-            Vector2i point = Mouse.GetPosition(Sf.window);
-            planetCandidate = new PBody { Mass = ConstMass, Speed = new Vector2f(0, 0), Pos = (Vector2f)point, Color = new Color(0, 0, 255), Size = 5 };
+            Vector2f point = Sf.window.MapPixelToCoords(Mouse.GetPosition(Sf.window));
+            int size = ConstMass / 50;
+            if (size < 5) size = 5;
+            if (size > 20) size = 20;
+            planetCandidate = new PBody { Mass = ConstMass, Speed = new Vector2f(0, 0), Pos = (Vector2f)point, Color = new Color(0, 0, 255), Size = size };
         }
         public static void CreateSpeed()
         {
-            Vector2i point = Mouse.GetPosition(Sf.window);
+            Vector2f point = Sf.window.MapPixelToCoords(Mouse.GetPosition(Sf.window));
             if (planetCandidate != null)
                 planetCandidate.Speed = new Vector2f((point.X - planetCandidate.Pos.X) / 100, (point.Y - planetCandidate.Pos.Y) / 100);
             Sf.creatingSpeed = false;

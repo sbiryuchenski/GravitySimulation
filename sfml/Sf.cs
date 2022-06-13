@@ -11,17 +11,22 @@ namespace sfml
         public static readonly uint W = 1200;
         const uint FPS = 60;
         public static RenderWindow window;
+        public static View view;
+
         Clock clock = new Clock();
         float delta = 100f;
         VertexArray speedLine;
         int mass;
+        Vector2f currentMousePosition;
+        Vector2f newPosition;
 
         bool isPaused = false;
         static public bool isPausedCreating = false;
         static public bool creatingSpeed = false;
         static public bool creatingPlanet = false;
+        bool isWindowMoving = false;
 
-        private MassInput field; // dont use it. It won't work
+       // private MassInput field; // dont use it. It won't work
         private MassInput GetField { get; set; } = new MassInput();
 
         void DrawPlanet(PBody obj) => window.Draw(obj.GetDrawable());
@@ -38,10 +43,19 @@ namespace sfml
             }
             for (int i = 0; i < planets.Count; i++)
             {
-                if (planets[i].Pos.X > W + 1000 || planets[i].Pos.X < -1000 || planets[i].Pos.Y > H + 1000 || planets[i].Pos.Y < -1000)
+                if (planets[i].Pos.X > W + 10000 || planets[i].Pos.X < -10000 || planets[i].Pos.Y > H + 10000 || planets[i].Pos.Y < -10000)
                 {
                     planets.Remove(planets[i]);
                 }
+            }
+        }
+        void DrawSpeedLine()
+        {
+            if (creatingPlanet)
+            {
+                if (creatingSpeed)
+                    speedLine[1] = new Vertex(window.MapPixelToCoords(Mouse.GetPosition(window)));
+                window.Draw(speedLine);
             }
         }
         void CountNextState(List<PBody> planets)
@@ -56,29 +70,51 @@ namespace sfml
                     }
                 }
             }
+            if(planets.Count == 0)
+                Planets.AddPlanet(Planets.EmptyPlanet);
             planets[0].Pos = new Vector2f(0, 0);
+        }
+        void MoveWindow()
+        {
+            var offset = window.MapPixelToCoords((Vector2i)currentMousePosition) - window.MapPixelToCoords((Vector2i)newPosition);
+            view.Move(offset);
+            window.SetView(view);
+            GetField.MoveCoords(offset);
+        }
+        void ZoomWindow(float delta)
+        {
+            if (delta > 0)
+            {
+                view.Zoom(0.95f);
+            }
+            else
+            {
+                view.Zoom(1.05f);
+            }
+            window.SetView(view);
+            GetField.MapCoords();
         }
         void InitWindow()
         {
             VideoMode mode = new VideoMode(W, H);
             window = new RenderWindow(mode, "хуй");
             window.SetFramerateLimit(FPS);
+            view = new View(new FloatRect(0, 0, W, H));
+            window.SetView(view);
+
             Planets.AddPlanet(Planets.EmptyPlanet);
 
             Planets.AddPlanet(1, new Vector2f(0.1f, 0.1f), new Vector2f(W / 2, H / 2), new Color(255, 0, 0), 5);
             Planets.AddPlanet(50, new Vector2f(0f, -0.1f), new Vector2f(W / 2 + 100, H / 2 + 100), new Color(0, 255, 0), 5);
             Planets.AddPlanet(50, new Vector2f(0.1f, -0.4f), new Vector2f(W / 2 - 100, H / 2 + 100), new Color(0, 255, 0), 5);
-
-            field = new MassInput();
-            field.Init();
         }
 
 
         public void Show()
         {
             InitWindow();
-
             #region events
+
             window.Closed += (obj, e) => { window.Close(); };
             window.KeyPressed += (sender, e) =>
             {
@@ -91,7 +127,7 @@ namespace sfml
             {
                 if (e.Button == Mouse.Button.Left)
                 {
-                    Vector2i point = Mouse.GetPosition(window);
+                    Vector2i point = (Vector2i)(window.MapPixelToCoords(Mouse.GetPosition(window)));
                     if (GetField.CheckIsMouseInRectangle())
                     {
                         GetField.InputMass();
@@ -151,6 +187,11 @@ namespace sfml
                         }
                     }
                 }
+                if(e.Button == Mouse.Button.Right)
+                {
+                    currentMousePosition = (Vector2f)Mouse.GetPosition(window);
+                    isWindowMoving = true;
+                }
             };
             window.MouseButtonReleased += (sender, e) =>
             {
@@ -158,9 +199,19 @@ namespace sfml
                 {
                     Planets.CreateSpeed();
                 }
+                if(e.Button == Mouse.Button.Right)
+                {
+                    isWindowMoving = false;
+                }
             };
+            window.MouseMoved += (sender, e) =>
+             {
+                 newPosition = new Vector2f(e.X, e.Y);
+                 if(isWindowMoving)
+                    MoveWindow();
+                 currentMousePosition = new Vector2f(e.X, e.Y);
+             };
             window.KeyPressed += (sender, e) =>
-
             {
                 if (e.Code == Keyboard.Key.P)
                 {
@@ -168,14 +219,17 @@ namespace sfml
                     creatingSpeed = false;
                     creatingPlanet = false;
                 }
-            };
-            window.KeyPressed += (sender, e) =>
-            {
                 if (e.Code == Keyboard.Key.C)
                 {
                     Planets.ClearPlanetList();
                 }
             };
+            window.MouseWheelScrolled += (sender, e) =>
+            {
+                ZoomWindow(e.Delta);
+            };
+            if(isWindowMoving)
+                MoveWindow();
             #endregion
 
             #region drawing
@@ -184,21 +238,22 @@ namespace sfml
                 delta = clock.Restart().AsSeconds();
 
                 window.DispatchEvents();
-
                 window.Clear();
-                DrawPlanets(Planets.PlanetList);
 
                 if (!isPaused && !isPausedCreating && !GetField.isEditing)
                 {
                     CountNextState(Planets.PlanetList);
                 }
-                if (creatingPlanet)
-                {
-                    if (creatingSpeed)
-                        speedLine[1] = new Vertex((Vector2f)Mouse.GetPosition(window));
-                    window.Draw(speedLine);
-                }
-                GetField.DrawTextField(/*Planets.ConstMass.ToString()*/ GetField.enteredMass);
+
+                DrawSpeedLine();
+
+                DrawPlanets(Planets.PlanetList);
+
+                var old = window.GetView();
+                window.SetView(window.DefaultView);
+                GetField.DrawTextField(GetField.enteredMass);
+                window.SetView(view);
+
                 window.Display();
             }
             #endregion

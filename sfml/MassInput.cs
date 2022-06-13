@@ -62,5 +62,21 @@ namespace sfml
             isEditing = true;
             enteredMass = string.Empty;
         }
+        /// <summary>
+        /// Accept new coords when size changed
+        /// </summary>
+        public void MapCoords()
+        {
+            //text.Position = Sf.window.MapPixelToCoords((Vector2i)text.Position);
+            //field.Position = Sf.window.MapPixelToCoords((Vector2i)field.Position);
+        }
+        /// <summary>
+        /// Accept new coords when field moved
+        /// </summary>
+        public void MoveCoords(Vector2f offset)
+        {
+            //text.Position = new Vector2f(text.Position.X + offset.X, text.Position.Y + offset.Y);
+            //field.Position = new Vector2f(field.Position.X + offset.X, field.Position.Y + offset.Y);
+        }
     }
 }
