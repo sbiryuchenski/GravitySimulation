@@ -3,6 +3,7 @@ using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 namespace sfml
 {
@@ -59,11 +60,12 @@ namespace sfml
         void InitWindow()
         {
             VideoMode mode = new VideoMode(W, H);
-            window = new RenderWindow(mode, "хуй");
+            settings.AntialiasingLevel = 8;
+            window = new RenderWindow(mode, "Gravity simulation",Styles.None, settings);
             window.SetFramerateLimit(FPS);
             view = new View(new FloatRect(0, 0, W, H));
             window.SetView(view);
-
+            
             Planets.AddPlanet(Planets.EmptyPlanet);
 
             Planets.AddPlanet(1, new Vector2f(0.1f, 0.1f), new Vector2f(W / 2, H / 2), new Color(255, 0, 0), 5);

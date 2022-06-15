@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace sfml
 {
@@ -10,9 +11,10 @@ namespace sfml
         public static readonly uint H = 700;
         public static readonly uint W = 1200;
         const uint FPS = 60;
-        public static int Framerate = 0;
+        public static int Framerate = 8;
         public static RenderWindow window;
         public static View view;
+        public static ContextSettings settings = new ContextSettings();
 
         Clock clock = new Clock();
         float delta = 100f;
