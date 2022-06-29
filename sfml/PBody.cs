@@ -26,7 +26,7 @@ namespace sfml
             }
             return line.GetDrawable();
             }
-        private PlanetLine line;
+        public PlanetLine line { get; private set; }
 
         public PBody()
         {
@@ -40,14 +40,33 @@ namespace sfml
             Color = color;
             Size = size;
         }
+        public PBody(PBody copy) 
+        {
+            Mass = copy.Mass;
+            Speed = copy.Speed;
+            Pos = copy.Pos;
+            Color = copy.Color;
+            Size = copy.Size;
+            circle = new CircleShape();
+        }
         public void Init()
         {
             circle.Position = Pos;
             circle.Radius = Size;
             circle.FillColor = Color;
             line = new PlanetLine(Pos, Color);
+            Texture texture;
+            if (Color != Color.Transparent)
+            {
+                texture = PlanetTextures.GetTextureByColor(Color);
+                circle.FillColor = Color.White;
+                circle.Texture = texture;
+            }
         }
-
+        public void InitLine()
+        {
+            line = new PlanetLine(Pos, Color);
+        }
         /// <summary>
         /// Color of body
         /// </summary>
@@ -90,22 +109,18 @@ namespace sfml
             float range = Range(bodyStable);
             if (range < 5000)
             {
-                float ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));
+                float ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));// возможно нужно учитывать массу другого объекта
                 float ay = (float)(bodyStable.Mass * (bodyStable.Pos.Y - this.Pos.Y) / Math.Pow(range, 3));
                 Speed = new Vector2f(Speed.X + ax, Speed.Y + ay);
             }
             Pos = new Vector2f(Pos.X + Speed.X, Pos.Y + Speed.Y);
             SetOffset();
-            if (Pos.X > 5000 || Pos.Y > 5000)
-            {
-                line.Line.Clear();
-            }
         }
 
         private float Range(PBody bodyStable)
         {
             float range = (float)Math.Sqrt(Math.Pow((this.Pos.X - bodyStable.Pos.X), 2) + Math.Pow((this.Pos.Y - bodyStable.Pos.Y), 2)); // Pythagorian theorem
-            if (range < 3) range = 3;
+            if (range < 5) range = 5;
             return range;
         }
 

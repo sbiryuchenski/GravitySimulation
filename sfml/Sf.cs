@@ -3,7 +3,6 @@ using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
 using System;
-using System.Threading.Tasks;
 
 namespace sfml
 {
@@ -68,9 +67,9 @@ namespace sfml
             
             Planets.AddPlanet(Planets.EmptyPlanet);
 
-            Planets.AddPlanet(1, new Vector2f(0.1f, 0.1f), new Vector2f(W / 2, H / 2), new Color(255, 0, 0), 5);
-            Planets.AddPlanet(50, new Vector2f(0f, -0.1f), new Vector2f(W / 2 + 100, H / 2 + 100), new Color(0, 255, 0), 5);
-            Planets.AddPlanet(50, new Vector2f(0.1f, -0.4f), new Vector2f(W / 2 - 100, H / 2 + 100), new Color(0, 255, 0), 5);
+            //Planets.AddPlanet(1, new Vector2f(0.1f, 0.1f), new Vector2f(W / 2, H / 2), new Color(255, 0, 0), 5);
+            //Planets.AddPlanet(50, new Vector2f(0f, -0.1f), new Vector2f(W / 2 + 100, H / 2 + 100), new Color(0, 255, 0), 5);
+            //Planets.AddPlanet(50, new Vector2f(0.1f, -0.4f), new Vector2f(W / 2 - 100, H / 2 + 100), new Color(0, 255, 0), 5);
         }
 
 
@@ -167,7 +166,7 @@ namespace sfml
                             else
                             {
                                 Planets.CreatePlanet();
-
+                                OrbitPreweiw = new OrbitPreweiw(Planets.planetCandidate);
                                 speedLine = new VertexArray(PrimitiveType.LineStrip, 2);
                                 speedLine.Clear();
                                 speedLine.Append(new Vertex((Vector2f)point));
@@ -218,6 +217,15 @@ namespace sfml
                 window.DispatchEvents();
                 window.Clear();
 
+                var old = window.GetView();
+                window.SetView(window.DefaultView);
+                Fone.Draw();
+                GetField.DrawTextField(GetField.enteredMass);
+                AllText.DrawSystemInfoText(isSystemInfoDisplay);
+                ColorSelecter.DrawColorSelecter();
+                SizeSelecter.DrawSizeSelecter();
+                window.SetView(view);
+
                 if (!isPaused && !isPausedCreating && !GetField.isEditing)
                 {
                     Planets.CountNextState();
@@ -227,13 +235,12 @@ namespace sfml
 
                 DrawPlanets(Planets.PlanetList);
 
-                var old = window.GetView();
-                window.SetView(window.DefaultView);
-                GetField.DrawTextField(GetField.enteredMass);
-                AllText.DrawSystemInfoText(isSystemInfoDisplay);
-                ColorSelecter.DrawColorSelecter();
-                SizeSelecter.DrawSizeSelecter();
-                window.SetView(view);
+                if (isPausedCreating)
+                {
+                    this.OrbitPreweiw.DrawPreweiwLine();
+                }
+
+
 
                 window.Display();
             }

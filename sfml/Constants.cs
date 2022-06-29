@@ -1,4 +1,6 @@
 ﻿using SFML.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace sfml
 {
@@ -37,10 +39,9 @@ namespace sfml
                     returnColor = new Color(60, 170, 60);
                     break;
                 default:
-                    throw new System.Exception($"Color {color} not found");
+                    throw new Exception($"Color {color} not found");
             }
             return returnColor;
-            
         }
     }
 }
