@@ -6,7 +6,7 @@ namespace sfml
 {
     partial class Sf
     {
-
+        Settings Settings; // Global settings
         public static readonly uint W = 1280; // use 16:9 plz
         public static readonly uint H = 720;
 
@@ -14,12 +14,13 @@ namespace sfml
         public static int Framerate = 8; // idk why, maybe should delete
         public static RenderWindow window;
         public static View view;
+        private float zoomFactor = 1;
         public static ContextSettings settings = new ContextSettings();
 
         Clock clock = new Clock();
         float delta = 100f;
         VertexArray speedLine;
-        int mass;
+        int mass; // Вот кажется, что оно нахер на надо, но оно надо, без него не работает
         Vector2f currentMousePosition;
         Vector2f newPosition;
 

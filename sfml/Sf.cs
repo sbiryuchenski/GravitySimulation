@@ -3,6 +3,8 @@ using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Text.Json;
 
 namespace sfml
 {
@@ -14,11 +16,11 @@ namespace sfml
         {
             foreach (var planet in planets)
             {
-                DrawPlanet(planet);
+                DrawOrbit(planet);
             }
             foreach (var planet in planets)
             {
-                DrawOrbit(planet);
+                DrawPlanet(planet);
             }
             for (int i = 0; i < planets.Count; i++)
             {
@@ -48,16 +50,30 @@ namespace sfml
         {
             if (delta > 0)
             {
-                view.Zoom(0.95f);
+                if (zoomFactor > 0.05f)
+                {
+                    zoomFactor *= 0.93f;
+                    view.Zoom(0.93f);
+                }
             }
             else
             {
-                view.Zoom(1.05f);
+                if (zoomFactor < 4)
+                {
+                    zoomFactor *= 1.07f;
+                    view.Zoom(1.07f);
+                }
             }
             window.SetView(view);
         }
         void InitWindow()
         {
+            if (File.Exists("Settings.json")) // Config load
+            {
+                string jsn = File.ReadAllText("Settings.json");
+                Settings = JsonSerializer.Deserialize<Settings>(jsn);
+            }
+
             VideoMode mode = new VideoMode(W, H);
             settings.AntialiasingLevel = 8;
             window = new RenderWindow(mode, "Gravity simulation",Styles.None, settings);
@@ -71,7 +87,6 @@ namespace sfml
             //Planets.AddPlanet(50, new Vector2f(0f, -0.1f), new Vector2f(W / 2 + 100, H / 2 + 100), new Color(0, 255, 0), 5);
             //Planets.AddPlanet(50, new Vector2f(0.1f, -0.4f), new Vector2f(W / 2 - 100, H / 2 + 100), new Color(0, 255, 0), 5);
         }
-
 
         public void Show()
         {
@@ -210,7 +225,6 @@ namespace sfml
             #region drawing
             while (window.IsOpen)
             {
-
                 delta = clock.Restart().AsSeconds();
                 Framerate = (int)Math.Round(1 / delta);
 
@@ -231,16 +245,13 @@ namespace sfml
                     Planets.CountNextState();
                 }
 
-                DrawSpeedLine();
-
+                DrawSpeedLine(); // Draw speed vector of creating planet
                 DrawPlanets(Planets.PlanetList);
 
                 if (isPausedCreating)
                 {
                     this.OrbitPreweiw.DrawPreweiwLine();
                 }
-
-
 
                 window.Display();
             }

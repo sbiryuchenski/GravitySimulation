@@ -1,0 +1,12 @@
+{
+  "WindowWidth": 1280,
+  "WindowHeight": 720,
+
+  "Framerate": 60,
+  "AntialiasingLevel": 8,
+  "TextureSmoothing": true,
+
+  "UsePlanetTexture": true,
+  "ShowPlanetOrbit": true,
+  "UseFPSEnhancement": false
+}
