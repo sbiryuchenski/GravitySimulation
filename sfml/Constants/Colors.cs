@@ -11,5 +11,6 @@
         Orange,
         Violet,
         InLoveToad,
+        SemiTranspetentBlack,
     }
 }

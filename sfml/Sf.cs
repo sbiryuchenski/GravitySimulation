@@ -114,6 +114,10 @@ namespace sfml
                 {
                     isSystemInfoDisplay = !isSystemInfoDisplay;
                 }
+                if(e.Code == Keyboard.Key.M)
+                {
+                    isMenuShowing = !isMenuShowing;
+                }
             };
             window.MouseButtonPressed += (sender, e) =>
             {
@@ -131,8 +135,14 @@ namespace sfml
                                 {
                                     if (GetField.isEditing)
                                     {
-                                        GetField.enteredMass += e.Unicode;
-                                        e.Unicode = string.Empty;
+                                        if (GetField.enteredMass.Length < 9)
+                                        {
+                                            if (Int32.TryParse(e.Unicode, out mass))
+                                            {
+                                                GetField.enteredMass += e.Unicode;
+                                                e.Unicode = string.Empty;
+                                            }
+                                        }
                                     }
                                 }
                             };
@@ -153,13 +163,13 @@ namespace sfml
                     }
                     else
                     {
-                        if (ColorSelecter.isInColor())
+                        if (Menu.ColorSelecter.isInColor())
                         {
-                            ColorSelecter.SelectColor();
+                            Menu.ColorSelecter.SelectColor();
                         }
-                        else if (SizeSelecter.isInSize())
+                        else if (Menu.SizeSelecter.isInSize())
                         {
-                            SizeSelecter.SelectSize();
+                            Menu.SizeSelecter.SelectSize();
                         }
                         else
                         {
@@ -234,10 +244,9 @@ namespace sfml
                 var old = window.GetView();
                 window.SetView(window.DefaultView);
                 Fone.Draw();
+                Menu.Draw(isMenuShowing);
                 GetField.DrawTextField(GetField.enteredMass);
                 AllText.DrawSystemInfoText(isSystemInfoDisplay);
-                ColorSelecter.DrawColorSelecter();
-                SizeSelecter.DrawSizeSelecter();
                 window.SetView(view);
 
                 if (!isPaused && !isPausedCreating && !GetField.isEditing)

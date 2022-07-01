@@ -6,7 +6,7 @@ namespace sfml
 {
     partial class Sf
     {
-        Settings Settings; // Global settings
+        public static Settings Settings; // Global settings
         public static readonly uint W = 1280; // use 16:9 plz
         public static readonly uint H = 720;
 
@@ -28,15 +28,17 @@ namespace sfml
         static public bool isPausedCreating = false;
         static public bool creatingSpeed = false;
         static public bool creatingPlanet = false;
+        bool isMenuShowing = false;
         bool isWindowMoving = false;
         bool isSystemInfoDisplay = false;
 
         // private MassInput field; // dont use it. It won't work
         private MassInput GetField { get; set; } = new MassInput();
         private TextElements AllText { get; set; } = new TextElements();
-        private ColorSelecter ColorSelecter { get; set; } = new ColorSelecter();
-        private SizeSelecter SizeSelecter { get; set; } = new SizeSelecter();
+        //private ColorSelecter ColorSelecter { get; set; } = new ColorSelecter();
+        //private SizeSelecter SizeSelecter { get; set; } = new SizeSelecter();
         private OrbitPreweiw OrbitPreweiw { get; set; }
+        private BottomMenu Menu { get; set; } = new BottomMenu();
         private Fone Fone { get; set; } = new Fone();
     }
 }

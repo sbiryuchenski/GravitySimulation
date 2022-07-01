@@ -38,6 +38,9 @@ namespace sfml
                 case Colors.InLoveToad:
                     returnColor = new Color(60, 170, 60);
                     break;
+                case Colors.SemiTranspetentBlack:
+                    returnColor = new Color(0, 0, 0, 128);
+                    break;
                 default:
                     throw new Exception($"Color {color} not found");
             }

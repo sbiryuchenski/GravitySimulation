@@ -11,77 +11,91 @@ namespace sfml
         {
             Init();
         }
-        CircleShape xs, s, m, l, xl, xxl;
-        List<CircleShape> sizeList;
+        int position = 70;
+        Size xs, s, m, l, xl, xxl;
+        List<Size> sizeList;
         private void Init()
         {
+            xs = new Size();
+            xs.Circle = new CircleShape();
+            xs.Circle.Radius = 3;
+            xs.Circle.FillColor = Planets.ConstColor;
+            xs.Circle.Position = new Vector2f(360, Sf.H - 30 - xs.Circle.Radius);
 
-            xs = new CircleShape();
-            xs.Radius = 3;
-            xs.FillColor = Planets.ConstColor;
-            xs.Position = new Vector2f(360, Sf.H - 30 - xs.Radius);
+            s = new Size();
+            s.Circle = new CircleShape();
+            s.Circle.Radius = 5;
+            s.Circle.FillColor = Constants.GetColor(Colors.Orange);
+            s.Circle.Position = new Vector2f(370 + xs.Circle.Radius*2, Sf.H - 30 - s.Circle.Radius);
 
-            s = new CircleShape();
-            s.Radius = 5;
-            s.FillColor = Constants.GetColor(Colors.Orange);
-            s.Position = new Vector2f(370 + xs.Radius*2, Sf.H - 30 - s.Radius);
+            m = new Size();
+            m.Circle = new CircleShape();
+            m.Circle.Radius = 10;
+            m.Circle.FillColor = Constants.GetColor(Colors.Yellow);
+            m.Circle.Position = new Vector2f(385 + s.Circle.Radius * 2, Sf.H - 30 - m.Circle.Radius);
 
-            m = new CircleShape();
-            m.Radius = 10;
-            m.FillColor = Constants.GetColor(Colors.Yellow);
-            m.Position = new Vector2f(385 + s.Radius * 2, Sf.H - 30 - m.Radius);
+            l = new Size();
+            l.Circle = new CircleShape();
+            l.Circle.Radius = 15;
+            l.Circle.FillColor = Constants.GetColor(Colors.Green);
+            l.Circle.Position = new Vector2f(405 + m.Circle.Radius * 2, Sf.H - 30 - l.Circle.Radius);
 
-            l = new CircleShape();
-            l.Radius = 15;
-            l.FillColor = Constants.GetColor(Colors.Green);
-            l.Position = new Vector2f(405 + m.Radius * 2, Sf.H - 30 - l.Radius);
+            xl = new Size();
+            xl.Circle = new CircleShape();
+            xl.Circle.Radius = 20;
+            xl.Circle.FillColor = Constants.GetColor(Colors.Blue);
+            xl.Circle.Position = new Vector2f(435 + l.Circle.Radius * 2, Sf.H - 30 - xl.Circle.Radius);
 
-            xl = new CircleShape();
-            xl.Radius = 20;
-            xl.FillColor = Constants.GetColor(Colors.Blue);
-            xl.Position = new Vector2f(435 + l.Radius * 2, Sf.H - 30 - xl.Radius);
+            xxl = new Size();
+            xxl.Circle = new CircleShape();
+            xxl.Circle.Radius = 30;
+            xxl.Circle.FillColor = Constants.GetColor(Colors.Violet);
+            xxl.Circle.Position = new Vector2f(475 + xl.Circle.Radius * 2, Sf.H - 30 - xxl.Circle.Radius);
 
-            xxl = new CircleShape();
-            xxl.Radius = 30;
-            xxl.FillColor = Constants.GetColor(Colors.Violet);
-            xxl.Position = new Vector2f(475 + xl.Radius * 2, Sf.H - 30 - xxl.Radius);
-
-            sizeList = new List<CircleShape>() { xs, s, m, l, xl, xxl };
+            sizeList = new List<Size>() { xs, s, m, l, xl, xxl };
 
             foreach (var sz in sizeList)
             {
-                sz.OutlineThickness = 1;
-                sz.FillColor = Planets.ConstColor;
+                sz.Circle.OutlineThickness = 1;
+                sz.Circle.FillColor = Planets.ConstColor;
             }
         }
         /// <summary>
         /// Check is cursor in size and retur that size
         /// </summary>
         /// <returns></returns>
-        private CircleShape SelecterThickness()
+        private Size SelecterThickness()
         {
             var mouse = (Vector2f)Mouse.GetPosition(Sf.window);
             foreach (var sz in sizeList)
             {
-                sz.OutlineColor = Color.Transparent;
+                sz.Circle.OutlineColor = Color.Transparent;
             }
             foreach (var sz in sizeList)
             {
-                if (sz.GetGlobalBounds().Contains(mouse.X, mouse.Y))
+                if (sz.Circle.GetGlobalBounds().Contains(mouse.X, mouse.Y))
                 {
-                    sz.OutlineThickness = 1;
-                    sz.OutlineColor = Color.White;
+                    sz.Circle.OutlineThickness = 1;
+                    sz.Circle.OutlineColor = Color.White;
                     return sz;
                 }
             }
             return m;
         }
-        public void DrawSizeSelecter()
+        public void Draw(int getpos)
         {
+            position = getpos;
+            foreach (var sz in sizeList)
+            {
+                if (sz.IsSelected)
+                    sz.Circle.Position = new Vector2f(sz.Circle.Position.X, Sf.H - position - sz.Circle.Radius + 35);
+                else
+                    sz.Circle.Position = new Vector2f(sz.Circle.Position.X, Sf.H - position - sz.Circle.Radius + 40);
+            }
             SelecterThickness();
             foreach (var sz in sizeList)
             {
-                sz.Draw(Sf.window, RenderStates.Default);
+                sz.Circle.Draw(Sf.window, RenderStates.Default);
             }
         }
         /// <summary>
@@ -89,13 +103,13 @@ namespace sfml
         /// </summary>
         public void SelectSize()
         {
-            var selectedSize = SelecterThickness();
-            Planets.ConstSize = (int)selectedSize.Radius;
+            Size selectedSize = SelecterThickness();
+            Planets.ConstSize = (int)selectedSize.Circle.Radius;
             foreach (var sz in sizeList)
             {
-                sz.Position = new Vector2f(sz.Position.X, Sf.H - 30 - sz.Radius);
+                sz.IsSelected = false;
             }
-            selectedSize.Position = new Vector2f(selectedSize.Position.X, Sf.H - 45 - selectedSize.Radius);
+            selectedSize.IsSelected = true;
         }
         /// <summary>
         /// Check cursor in any size
@@ -106,12 +120,17 @@ namespace sfml
             var mouse = (Vector2f)Mouse.GetPosition(Sf.window);
             foreach (var sz in sizeList)
             {
-                if (sz.GetGlobalBounds().Contains(mouse.X, mouse.Y))
+                if (sz.Circle.GetGlobalBounds().Contains(mouse.X, mouse.Y))
                 {
                     return true;
                 }
             }
             return false;
         }
+    }
+    class Size
+    {
+        public bool IsSelected = false;
+        public CircleShape Circle { get; set; }
     }
 }
