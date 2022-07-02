@@ -42,6 +42,8 @@ namespace sfml
             else field.FillColor = new Color(0, 0, 0);
             field.Position = new Vector2f(10, Sf.H - position + 40);
             text.Position = new Vector2f(13, Sf.H - position + 40);
+            if (CheckIsMouseInRectangle()) field.OutlineColor = Color.Red;
+            else field.OutlineColor = Color.White;
             field.Draw(Sf.window, RenderStates.Default);
             text.Draw(Sf.window, RenderStates.Default);
         }

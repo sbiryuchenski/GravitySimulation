@@ -60,6 +60,7 @@ namespace sfml
                 position -= 3;
             }
             else isHided = true;
+            MassInput.isEditing = false;
         }
     }
     class MenuButton
