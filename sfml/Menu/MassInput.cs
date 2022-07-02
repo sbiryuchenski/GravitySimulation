@@ -22,7 +22,7 @@ namespace sfml
             field.FillColor = new Color(0, 0, 0);
             field.OutlineColor = new Color(255, 255, 255);
             field.OutlineThickness = 1;
-            field.Position = new Vector2f(10, Sf.H - field.Size.Y - 10);
+           // field.Position = new Vector2f(20, Sf.H - field.Size.Y - 10);
 
             text.Font = font;
             text.FillColor = new Color(255, 255, 255);
@@ -35,11 +35,13 @@ namespace sfml
         /// <summary>
         /// Draw rectangle with text
         /// </summary>
-        public void DrawTextField(string mass)
+        public void Draw(string mass, int position)
         {
             text.DisplayedString = mass;
             if (isEditing) field.FillColor = new Color(255, 0, 0);
             else field.FillColor = new Color(0, 0, 0);
+            field.Position = new Vector2f(10, Sf.H - position + 40);
+            text.Position = new Vector2f(13, Sf.H - position + 40);
             field.Draw(Sf.window, RenderStates.Default);
             text.Draw(Sf.window, RenderStates.Default);
         }

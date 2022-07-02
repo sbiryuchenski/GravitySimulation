@@ -124,22 +124,22 @@ namespace sfml
                 if (e.Button == Mouse.Button.Left)
                 {
                     Vector2i point = (Vector2i)(window.MapPixelToCoords(Mouse.GetPosition(window)));
-                    if (GetField.CheckIsMouseInRectangle())
+                    if (Menu.MassInput.CheckIsMouseInRectangle())
                     {
-                        GetField.InputMass();
-                        if (GetField.isEditing)
+                        Menu.MassInput.InputMass();
+                        if (Menu.MassInput.isEditing)
                         {
                             window.TextEntered += (sender, e) =>
                             {
                                 if (e.Unicode != "\b")
                                 {
-                                    if (GetField.isEditing)
+                                    if (Menu.MassInput.isEditing)
                                     {
-                                        if (GetField.enteredMass.Length < 9)
+                                        if (Menu.MassInput.enteredMass.Length < 9)
                                         {
                                             if (Int32.TryParse(e.Unicode, out mass))
                                             {
-                                                GetField.enteredMass += e.Unicode;
+                                                Menu.MassInput.enteredMass += e.Unicode;
                                                 e.Unicode = string.Empty;
                                             }
                                         }
@@ -148,13 +148,13 @@ namespace sfml
                             };
                             window.KeyPressed += (sender, e) =>
                             {
-                                if (GetField.isEditing)
+                                if (Menu.MassInput.isEditing)
                                 {
                                     if (e.Code == Keyboard.Key.Backspace)
                                     {
-                                        if (GetField.enteredMass.Length > 1)
+                                        if (Menu.MassInput.enteredMass.Length > 1)
                                         {
-                                            GetField.enteredMass = string.Empty;
+                                            Menu.MassInput.enteredMass = string.Empty;
                                         }
                                     }
                                 }
@@ -171,23 +171,27 @@ namespace sfml
                         {
                             Menu.SizeSelecter.SelectSize();
                         }
+                        else if (Menu.MenuButton.IsInButton())
+                        {
+                            isMenuShowing = !isMenuShowing;
+                        }
                         else
                         {
-                            if (GetField.enteredMass == string.Empty)
+                            if (Menu.MassInput.enteredMass == string.Empty)
                             {
-                                GetField.enteredMass = "20";
+                                Menu.MassInput.enteredMass = "20";
                             }
-                            if (int.TryParse(GetField.enteredMass, out mass))
+                            if (int.TryParse(Menu.MassInput.enteredMass, out mass))
                             {
-                                Planets.ConstMass = int.Parse(GetField.enteredMass);
+                                Planets.ConstMass = int.Parse(Menu.MassInput.enteredMass);
                             }
                             else
                             {
-                                GetField.enteredMass = "20";
+                                Menu.MassInput.enteredMass = "20";
                                 Planets.ConstMass = 20;
                             }
 
-                            if (GetField.isEditing) GetField.isEditing = false;
+                            if (Menu.MassInput.isEditing) Menu.MassInput.isEditing = false;
                             else
                             {
                                 Planets.CreatePlanet();
@@ -244,12 +248,12 @@ namespace sfml
                 var old = window.GetView();
                 window.SetView(window.DefaultView);
                 Fone.Draw();
-                Menu.Draw(isMenuShowing);
-                GetField.DrawTextField(GetField.enteredMass);
+                Menu.Draw(isMenuShowing, Menu.MassInput.enteredMass);
+               // GetField.DrawTextField(GetField.enteredMass);
                 AllText.DrawSystemInfoText(isSystemInfoDisplay);
                 window.SetView(view);
 
-                if (!isPaused && !isPausedCreating && !GetField.isEditing)
+                if (!isPaused && !isPausedCreating && !Menu.MassInput.isEditing)
                 {
                     Planets.CountNextState();
                 }

@@ -33,7 +33,7 @@ namespace sfml
         bool isSystemInfoDisplay = false;
 
         // private MassInput field; // dont use it. It won't work
-        private MassInput GetField { get; set; } = new MassInput();
+       // private MassInput GetField { get; set; } = new MassInput();
         private TextElements AllText { get; set; } = new TextElements();
         //private ColorSelecter ColorSelecter { get; set; } = new ColorSelecter();
         //private SizeSelecter SizeSelecter { get; set; } = new SizeSelecter();
