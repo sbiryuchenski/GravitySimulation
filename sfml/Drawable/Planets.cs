@@ -48,7 +48,7 @@ namespace sfml
             Sf.creatingSpeed = false;
             Sf.creatingPlanet = false;
             Sf.isPausedCreating = false;
-            if (planetCandidate != null) Planets.AddPlanet(planetCandidate);
+            if (planetCandidate != null) AddPlanet(planetCandidate);
             planetCandidate = null;
         }
 
@@ -58,7 +58,7 @@ namespace sfml
         public static void ClearPlanetList()
         {
             PlanetList.Clear();
-           // PlanetList.Add(EmptyPlanet);
+            // PlanetList.Add(EmptyPlanet);
         }
         public static void CountNextState()
         {
@@ -66,15 +66,29 @@ namespace sfml
             {
                 foreach (var planet2 in PlanetList)
                 {
-                    if (planet != planet2 && planet2.Mass!=0)
+                    if (planet != planet2)
                     {
                         planet.CountOffset(planet2);
                     }
                 }
             }
-            //if (PlanetList.Count == 0)
-            //    Planets.AddPlanet(Planets.EmptyPlanet);
-            //PlanetList[0].Pos = new Vector2f(0, 0);
+            foreach(var planet in PlanetList)
+            {
+                planet.SetVelocity();
+            }
+            //for (int i = 0; i < PlanetList.Count; i++)
+            //{
+            //    for (int j = 0; j < PlanetList.Count; j++)
+            //    {
+            //        if (i != j)
+            //        {
+            //            if (j != PlanetList.Count-1)
+            //            {
+            //                PlanetList[i].CountOffset(PlanetList[j]);
+            //            }
+            //        }
+            //    }
+            //}
         }
     }
 }

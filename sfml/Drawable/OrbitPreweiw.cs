@@ -37,6 +37,7 @@ namespace sfml
                 foreach (var planet in Planets.PlanetList)
                 {
                     creatingBody.CountOffset(planet);
+                    creatingBody.SetVelocity();
                 }
                 creatingBody.SetOffset();
             }

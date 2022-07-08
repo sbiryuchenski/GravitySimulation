@@ -35,7 +35,7 @@ namespace sfml
         public PBody(float mass, Vector2f speed, Vector2f startPosition, Color color, int size)
         {
             Mass = mass;
-            Speed = Speed;
+            Speed = speed;
             Pos = startPosition;
             Color = color;
             Size = size;
@@ -63,10 +63,6 @@ namespace sfml
                 circle.Texture = texture;
             }
         }
-        public void InitLine()
-        {
-            line = new PlanetLine(Pos, Color);
-        }
         /// <summary>
         /// Color of body
         /// </summary>
@@ -84,13 +80,11 @@ namespace sfml
         /// </summary>
         public Vector2f Pos { get; set; } // Current position of body
         /// <summary>
-        /// Velocity of body
-        /// </summary>
-        public Vector2f Vel { get; set; } = new Vector2f(0, 0);
-        /// <summary>
         /// Visible size of body
         /// </summary>
         public int Size { get; set; }
+
+        private float ax, ay;
 
         public void SetOffset()
         {
@@ -109,10 +103,13 @@ namespace sfml
             float range = Range(bodyStable);
             if (range < 5000)
             {
-                float ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));// возможно нужно учитывать массу другого объекта
-                float ay = (float)(bodyStable.Mass * (bodyStable.Pos.Y - this.Pos.Y) / Math.Pow(range, 3));
+                ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));// возможно нужно учитывать массу другого объекта
+                ay = (float)(bodyStable.Mass * (bodyStable.Pos.Y - this.Pos.Y) / Math.Pow(range, 3));
                 Speed = new Vector2f(Speed.X + ax, Speed.Y + ay);
             }
+        }
+        public void SetVelocity()
+        {
             Pos = new Vector2f(Pos.X + Speed.X, Pos.Y + Speed.Y);
             SetOffset();
         }
