@@ -86,10 +86,10 @@ namespace sfml
 
         private float ax, ay;
 
-        public void SetOffset()
+        public void SetOffset(bool isPreviewLine = false)
         {
             circle.Position = Pos - new Vector2f(circle.Radius / 2, circle.Radius / 2);
-            line.Add(Pos);
+            if(!isPreviewLine) line.Add(Pos);
             return;
         }
 
