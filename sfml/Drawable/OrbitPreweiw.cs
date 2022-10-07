@@ -34,14 +34,14 @@ namespace sfml
                 foreach (var planet in Planets.PlanetList)
                 {
                     creatingBody.CountOffset(planet);
-                    creatingBody.SetVelocity();
                 }
+                creatingBody.SetVelocity();
                 if (creatingBody.line.Line.VertexCount > 250)
                 {
                     pointColor = new Color(pointColor.R, pointColor.G, pointColor.B, (byte)(500 - creatingBody.line.Line.VertexCount));
                 }
                 creatingBody.line.Color = pointColor;
-                creatingBody.SetOffset();
+                //creatingBody.SetOffset();
             }
         }
         public void DrawPreweiwLine()
