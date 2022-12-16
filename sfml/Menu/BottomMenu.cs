@@ -22,6 +22,7 @@ namespace sfml
         public SizeSelecter SizeSelecter { get; set; } = new SizeSelecter();
         public MassInput MassInput { get; set; } = new MassInput();
         public MenuButton MenuButton { get; set; } = new MenuButton();
+        public UselessDrawableShit UselessDrawableShit { get; set; } = new();
         private void Init()
         {
             menuRect = new RectangleShape(new Vector2f(Sf.W, 70));
@@ -40,6 +41,7 @@ namespace sfml
                 ColorSelecter.Draw(position);
                 SizeSelecter.Draw(position);
                 MassInput.Draw(fieldText, position);
+                UselessDrawableShit.DrawAll(position);
             }
             MenuButton.Draw(position, isMove);
         }
@@ -62,6 +64,12 @@ namespace sfml
             else isHided = true;
             MassInput.isEditing = false;
         }
+        public bool isMouseInMenu()
+        {
+            var mouse = (Vector2f)Mouse.GetPosition(Sf.window);
+            return menuRect.GetGlobalBounds().Contains(mouse.X, mouse.Y);
+        }
+        public Buttons GetPressedButton() => UselessDrawableShit.GetPressedButton();
     }
     class MenuButton
     {

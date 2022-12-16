@@ -103,6 +103,7 @@ namespace sfml
             }
             selectedSize.IsSelected = true;
         }
+
         /// <summary>
         /// Check cursor in any size
         /// </summary>
