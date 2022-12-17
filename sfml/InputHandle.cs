@@ -95,7 +95,9 @@ namespace sfml
                                 case Buttons.F3W:
                                     isSystemInfoDisplay = !isSystemInfoDisplay;
                                     break;
-
+                                case Buttons.InfoW:
+                                    Menu.IsDrawIcons = !Menu.IsDrawIcons;
+                                    break;
                             }
                         }
                         else
@@ -145,18 +147,41 @@ namespace sfml
                 if (e.Code == Keyboard.Key.P)
                 {
                     Pause();
+                    Menu.UselessDrawableShit.MakeButtonRed(Buttons.PW);
                 }
                 if (e.Code == Keyboard.Key.C)
                 {
                     Planets.ClearPlanetList();
+                    Menu.UselessDrawableShit.MakeButtonRed(Buttons.CW);
                 }
                 if (e.Code == Keyboard.Key.F3)
                 {
                     isSystemInfoDisplay = !isSystemInfoDisplay;
+                    Menu.UselessDrawableShit.MakeButtonRed(Buttons.F3W);
                 }
                 if (e.Code == Keyboard.Key.M)
                 {
                     isMenuShowing = !isMenuShowing;
+                    Menu.UselessDrawableShit.MakeButtonRed(Buttons.MW);
+                }
+            };
+            window.KeyReleased += (sender, e) =>
+            {
+                if (e.Code == Keyboard.Key.P)
+                {
+                    Menu.UselessDrawableShit.MakeButtonWhite(Buttons.PW);
+                }
+                if (e.Code == Keyboard.Key.C)
+                {
+                    Menu.UselessDrawableShit.MakeButtonWhite(Buttons.CW);
+                }
+                if (e.Code == Keyboard.Key.F3)
+                {
+                    Menu.UselessDrawableShit.MakeButtonWhite(Buttons.F3W);
+                }
+                if (e.Code == Keyboard.Key.M)
+                {
+                    Menu.UselessDrawableShit.MakeButtonWhite(Buttons.MW);
                 }
             };
 

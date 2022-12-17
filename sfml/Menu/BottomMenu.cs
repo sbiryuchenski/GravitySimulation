@@ -11,6 +11,8 @@ namespace sfml
     /// </summary>
     class BottomMenu
     {
+        public bool IsDrawIcons { get; set; } = false;
+
         int position = 0;
         bool isHided = true;
         public BottomMenu()
@@ -26,7 +28,7 @@ namespace sfml
         private void Init()
         {
             menuRect = new RectangleShape(new Vector2f(Sf.W, 70));
-            menuRect.FillColor = Constants.GetColor(Colors.SemiTranspetentBlack);
+            menuRect.FillColor = ColorConstants.GetColor(Colors.SemiTranspetentBlack);
             menuRect.Position = new Vector2f(0, Sf.H - position);
         }
         public void Draw(bool isMove, string fieldText)
@@ -41,7 +43,7 @@ namespace sfml
                 ColorSelecter.Draw(position);
                 SizeSelecter.Draw(position);
                 MassInput.Draw(fieldText, position);
-                UselessDrawableShit.DrawAll(position);
+                UselessDrawableShit.DrawAll(position, IsDrawIcons);
             }
             MenuButton.Draw(position, isMove);
         }

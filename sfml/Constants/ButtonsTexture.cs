@@ -19,6 +19,9 @@ namespace sfml
             {Buttons.F3R, new Texture($"{Environment.CurrentDirectory}\\Recources\\F3ButtonR.png")},
             {Buttons.LMB, new Texture($"{Environment.CurrentDirectory}\\Recources\\LMB.png")},
             {Buttons.RMB, new Texture($"{Environment.CurrentDirectory}\\Recources\\RMB.png")},
+            {Buttons.Scroll, new Texture($"{Environment.CurrentDirectory}\\Recources\\ScrollButton.png")},
+            {Buttons.InfoW, new Texture($"{Environment.CurrentDirectory}\\Recources\\InfoButtonW.png")},
+            {Buttons.InfoR, new Texture($"{Environment.CurrentDirectory}\\Recources\\InfoButtonR.png")},
         };
 
         public static Texture GetTexture(Buttons btn)

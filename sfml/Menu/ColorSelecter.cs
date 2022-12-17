@@ -21,44 +21,44 @@ namespace sfml
         {
             red = new PlanetColor();
             red.Rectangle = new RectangleShape();
-            red.Color = Constants.GetColor(Colors.Red);
-            red.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(Constants.GetColor(Colors.Red));
+            red.Color = ColorConstants.GetColor(Colors.Red);
+            red.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(ColorConstants.GetColor(Colors.Red));
             red.Rectangle.Position = new Vector2f(140, Sf.H + position);
 
             orange = new PlanetColor();
             orange.Rectangle = new RectangleShape();
-            orange.Color = Constants.GetColor(Colors.Orange);
-            orange.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(Constants.GetColor(Colors.Orange));
+            orange.Color = ColorConstants.GetColor(Colors.Orange);
+            orange.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(ColorConstants.GetColor(Colors.Orange));
             orange.Rectangle.Position = new Vector2f(170, Sf.H + position);
 
             yellow = new PlanetColor();
             yellow.Rectangle = new RectangleShape();
-            yellow.Color = Constants.GetColor(Colors.Yellow);
-            yellow.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(Constants.GetColor(Colors.Yellow));
+            yellow.Color = ColorConstants.GetColor(Colors.Yellow);
+            yellow.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(ColorConstants.GetColor(Colors.Yellow));
             yellow.Rectangle.Position = new Vector2f(200, Sf.H + position);
 
             green = new PlanetColor();
             green.Rectangle = new RectangleShape();
-            green.Color = Constants.GetColor(Colors.Green);
-            green.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(Constants.GetColor(Colors.Green));
+            green.Color = ColorConstants.GetColor(Colors.Green);
+            green.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(ColorConstants.GetColor(Colors.Green));
             green.Rectangle.Position = new Vector2f(230, Sf.H + position);
 
             blue = new PlanetColor();
             blue.Rectangle = new RectangleShape();
-            blue.Color = Constants.GetColor(Colors.Blue);
-            blue.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(Constants.GetColor(Colors.Blue));
+            blue.Color = ColorConstants.GetColor(Colors.Blue);
+            blue.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(ColorConstants.GetColor(Colors.Blue));
             blue.Rectangle.Position = new Vector2f(260, Sf.H + position);
 
             violet = new PlanetColor();
             violet.Rectangle = new RectangleShape();
-            violet.Color = Constants.GetColor(Colors.Violet);
-            violet.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(Constants.GetColor(Colors.Violet));
+            violet.Color = ColorConstants.GetColor(Colors.Violet);
+            violet.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(ColorConstants.GetColor(Colors.Violet));
             violet.Rectangle.Position = new Vector2f(290, Sf.H + position);
 
             inLoveToad = new PlanetColor();
             inLoveToad.Rectangle = new RectangleShape();
-            inLoveToad.Color = Constants.GetColor(Colors.InLoveToad);
-            inLoveToad.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(Constants.GetColor(Colors.InLoveToad));
+            inLoveToad.Color = ColorConstants.GetColor(Colors.InLoveToad);
+            inLoveToad.Rectangle.Texture = PlanetTextures.GetSquareTextureByColor(ColorConstants.GetColor(Colors.InLoveToad));
             inLoveToad.Rectangle.Position = new Vector2f(320, Sf.H + position);
 
             colorList = new List<PlanetColor>() { red, orange, yellow, green, blue, violet, inLoveToad };

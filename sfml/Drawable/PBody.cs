@@ -103,7 +103,7 @@ namespace sfml
             float range = Range(bodyStable);
             if (range < 5000)
             {
-                ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));// возможно нужно учитывать массу другого объекта
+                ax = (float)(bodyStable.Mass * (bodyStable.Pos.X - this.Pos.X) / Math.Pow(range, 3));
                 ay = (float)(bodyStable.Mass * (bodyStable.Pos.Y - this.Pos.Y) / Math.Pow(range, 3));
                 Speed = new Vector2f(Speed.X + ax, Speed.Y + ay);
             }

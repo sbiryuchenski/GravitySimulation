@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace sfml
 {
-    static class Constants
+    static class ColorConstants
     {
         public static Color GetColor(Colors color)
         {

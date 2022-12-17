@@ -13,7 +13,7 @@ namespace sfml
         public static List<PBody> PlanetList { get; private set; } = new List<PBody>();
         public static PBody planetCandidate = null; // New planet when creating
         public static int ConstMass { get; set; } = 20; // Mass of planet when it's creating
-        public static Color ConstColor { get; set; } = Constants.GetColor(Colors.Blue);
+        public static Color ConstColor { get; set; } = ColorConstants.GetColor(Colors.Blue);
         public static int ConstSize { get; set; } = 5;
         public static readonly PBody EmptyPlanet = new PBody(0, new Vector2f(0, 0), new Vector2f(0, 0), new Color(), 0); // Need to work counting algoritm
 
