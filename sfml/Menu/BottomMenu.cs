@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using sfml.Menu;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System;
@@ -24,6 +25,7 @@ namespace sfml
         public SizeSelecter SizeSelecter { get; set; } = new SizeSelecter();
         public MassInput MassInput { get; set; } = new MassInput();
         public MenuButton MenuButton { get; set; } = new MenuButton();
+        public SpeedChanger SpeedChanger { get; set; } = new SpeedChanger();
         public UselessDrawableShit UselessDrawableShit { get; set; } = new();
         private void Init()
         {
@@ -44,6 +46,7 @@ namespace sfml
                 SizeSelecter.Draw(position);
                 MassInput.Draw(fieldText, position);
                 UselessDrawableShit.DrawAll(position, IsDrawIcons);
+                SpeedChanger.Draw(position);
             }
             MenuButton.Draw(position, isMove);
         }

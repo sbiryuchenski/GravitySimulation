@@ -91,6 +91,9 @@
     <None Update="Recources\RMB.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Recources\Scroll.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Recources\ScrollButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

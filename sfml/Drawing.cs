@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFML.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,7 +28,7 @@ namespace sfml
 
                 if (!isPaused && !isPausedCreating && !Menu.MassInput.isEditing)
                 {
-                    Planets.CountNextState();
+                    Planets.CountNextState(speed);
                 }
 
                 DrawSpeedLine(); // Draw speed vector of creating planet
@@ -37,6 +38,7 @@ namespace sfml
                 {
                     this.OrbitPreweiw.DrawPreweiwLine();
                 }
+
 
                 window.Display();
             }

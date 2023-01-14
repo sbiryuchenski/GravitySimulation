@@ -22,6 +22,7 @@ namespace sfml
             Buttons pressedButton = Buttons.NotAButton;
 
             window.Closed += (obj, e) => { window.Close(); };
+            #region LMB
             window.MouseButtonPressed += (sender, e) =>
             {
                 if (e.Button == Mouse.Button.Left)
@@ -78,6 +79,10 @@ namespace sfml
                         {
                             isMenuShowing = !isMenuShowing;
                         }
+                        else if (Menu.SpeedChanger.IsInScroll())
+                        {
+                            Menu.SpeedChanger.isChanging = true;
+                        }
                         else if (isMenuShowing && Menu.UselessDrawableShit.IsMouseInAnyButton())
                         {
                                 pressedButton = Menu.GetPressedButton();
@@ -132,12 +137,16 @@ namespace sfml
                         }
                     }
                 }
+                #endregion
+            #region RMB
                 if (e.Button == Mouse.Button.Right)
                 {
                     currentMousePosition = (Vector2f)Mouse.GetPosition(window);
                     isWindowMoving = true;
                 }
             };
+            #endregion
+            #region KEYS
             window.KeyPressed += (sender, e) =>
             {
                 if (e.Code == Keyboard.Key.Escape)
@@ -162,7 +171,17 @@ namespace sfml
                 if (e.Code == Keyboard.Key.M)
                 {
                     isMenuShowing = !isMenuShowing;
+                    Menu.SpeedChanger.isChanging = false;
+
                     Menu.UselessDrawableShit.MakeButtonRed(Buttons.MW);
+                }
+                if(e.Code == Keyboard.Key.Add)
+                {
+                    Speed += 1;
+                }
+                if(e.Code == Keyboard.Key.Subtract)
+                {
+                    Speed -= 1;
                 }
             };
             window.KeyReleased += (sender, e) =>
@@ -184,12 +203,17 @@ namespace sfml
                     Menu.UselessDrawableShit.MakeButtonWhite(Buttons.MW);
                 }
             };
+            #endregion
 
             window.MouseButtonReleased += (sender, e) =>
             {
                 if (e.Button == Mouse.Button.Left)
                 {
                     Planets.CreateSpeed();
+                    if(Menu.SpeedChanger.isChanging) 
+                    {
+                        Menu.SpeedChanger.isChanging = false;
+                    }
                 }
                 if (e.Button == Mouse.Button.Right)
                 {

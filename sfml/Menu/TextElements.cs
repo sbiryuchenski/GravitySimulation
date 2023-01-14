@@ -9,6 +9,7 @@ namespace sfml
     {
         Text fps = new Text();
         Text objectsCounter = new Text();
+        Text speed = new Text();
         Font font = new Font($"{Environment.CurrentDirectory}\\Recources\\font.ttf");
         public TextElements()
         {
@@ -27,6 +28,12 @@ namespace sfml
             objectsCounter.CharacterSize = 15;
             objectsCounter.DisplayedString = string.Empty;
             objectsCounter.Position = new Vector2f(10, 30);
+
+            speed.Font = font;
+            speed.FillColor = new Color(255, 255, 255);
+            speed.CharacterSize = 15;
+            speed.DisplayedString = string.Empty;
+            speed.Position = new Vector2f(Sf.W-80, 10);
         }
         private void DrawFPSCounter()
         {
@@ -45,8 +52,14 @@ namespace sfml
             {
                 DrawFPSCounter();
                 DrawObjectsCount();
+                DrawSpeed();
             }
 
+        }
+        public void DrawSpeed()
+        {
+            speed.DisplayedString = $"Speed: {Sf.Speed}";
+            speed.Draw(Sf.window, RenderStates.Default);
         }
     }
 }

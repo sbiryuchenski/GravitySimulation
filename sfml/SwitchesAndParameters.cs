@@ -31,6 +31,16 @@ namespace sfml
         bool isMenuShowing = false;
         bool isWindowMoving = false;
         bool isSystemInfoDisplay = false;
+        static int speed = 1;
+        public static int Speed 
+        {
+            get { return speed; }
+            set 
+            { 
+                if (value < 1) speed = 1;
+                else speed = value;
+            } 
+        }
 
         // private MassInput field; // dont use it. It won't work
        // private MassInput GetField { get; set; } = new MassInput();

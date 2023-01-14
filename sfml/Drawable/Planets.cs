@@ -60,21 +60,24 @@ namespace sfml
             PlanetList.Clear();
             AddPlanet(EmptyPlanet);
         }
-        public static void CountNextState()
+        public static void CountNextState(int speed = 1)
         {
-            foreach (var planet in PlanetList)
+            for (int i = 0; i < speed; i++)
             {
-                foreach (var planet2 in PlanetList)
+                foreach (var planet in PlanetList)
                 {
-                    if (planet != planet2)
+                    foreach (var planet2 in PlanetList)
                     {
-                        planet.CountOffset(planet2);
+                        if (planet != planet2)
+                        {
+                            planet.CountOffset(planet2);
+                        }
                     }
                 }
-            }
-            foreach(var planet in PlanetList)
-            {
-                planet.SetVelocity();
+                foreach (var planet in PlanetList)
+                {
+                    planet.SetVelocity();
+                }
             }
         }
     }
